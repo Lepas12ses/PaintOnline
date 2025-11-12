@@ -1,8 +1,8 @@
-import type { FC } from "react";
+import { type FC } from "react";
 import { Navigate } from "react-router-dom";
 
 import useRoomIdQuery from "../../lib/hooks/useRoomIdQuery";
-import ScreenLoading from "@/shared/ui/components/ScreenLoading/ScreenLoading";
+import ScreenLoading from "@/widget/ui/components/ScreenLoading/ScreenLoading";
 
 const StartPage: FC = () => {
 	const { roomId, isPending, isError } = useRoomIdQuery();
