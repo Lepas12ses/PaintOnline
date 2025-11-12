@@ -1,0 +1,17 @@
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+
+	width: fit-content;
+	background-color: rgb(255, 205, 205);
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.actions {
+	display: flex;
+	justify-content: end;
+	gap: 1rem;
+}
