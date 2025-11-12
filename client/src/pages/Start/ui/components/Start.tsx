@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { Navigate } from "react-router-dom";
 import useRoomIdQuery from "../../lib/hooks/useRoomIdQuery";
+import ScreenLoading from "@/shared/ui/components/ScreenLoading/ScreenLoading";
 
 const StartPage: FC = () => {
 	const { roomId, isPending, isError } = useRoomIdQuery();
@@ -13,7 +13,8 @@ const StartPage: FC = () => {
 		return <p>Something wrong happened</p>;
 	}
 
-	return <Navigate to={`/${roomId}`} replace />;
+	// return <Navigate to={`/${roomId}`} replace />;
+	return <ScreenLoading />;
 };
 
 export default StartPage;
