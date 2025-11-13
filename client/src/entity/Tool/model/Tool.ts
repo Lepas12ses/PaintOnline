@@ -1,8 +1,16 @@
 export default class Tool {
-	canvasContext: CanvasRenderingContext2D;
+	protected canvas: HTMLCanvasElement;
+	protected canvasContext: CanvasRenderingContext2D;
 
-	constructor(context: CanvasRenderingContext2D) {
-		this.canvasContext = context;
+	constructor(canvas: HTMLCanvasElement) {
+		this.canvas = canvas;
+		const canvasContext = canvas.getContext("2d");
+		if (!canvasContext) {
+			throw new Error("Cannot get canvas 2d context");
+		}
+		this.canvasContext = canvasContext;
+
+		this.destroyEvents();
 	}
 
 	set fillColor(color: string) {
@@ -15,5 +23,11 @@ export default class Tool {
 
 	set strokeWidth(width: number) {
 		this.canvasContext.lineWidth = width;
+	}
+
+	protected destroyEvents() {
+		this.canvas.onmousedown = null;
+		this.canvas.onmouseup = null;
+		this.canvas.onmousemove = null;
 	}
 }
