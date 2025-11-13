@@ -1,0 +1,47 @@
+@property --angle {
+	syntax: "<angle>";
+	inherits: false;
+	initial-value: 0deg;
+}
+
+@keyframes spin {
+	0% {
+		--angle: 0deg;
+	}
+	100% {
+		--angle: 360deg;
+	}
+}
+
+.icon-toggle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 12px;
+	border-radius: 12px;
+
+	background-color: #9257ff;
+
+	&_toggled {
+		position: relative;
+		background-color: #5f38a7;
+
+		&::after {
+			position: absolute;
+
+			content: "";
+			background-image: conic-gradient(
+				from var(--angle),
+				#9257ff,
+				#73ff81,
+				#9257ff
+			);
+
+			inset: -3px;
+			border-radius: 12px;
+			z-index: -1;
+
+			animation: spin ease-in-out 1s infinite alternate;
+		}
+	}
+}
