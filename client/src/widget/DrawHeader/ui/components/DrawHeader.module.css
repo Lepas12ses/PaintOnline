@@ -5,6 +5,7 @@
   right: 0;
   display: flex;
   flex-direction: column;
+  gap: 8px;
   background-color: #ece0ff;
   border-bottom: 2px solid #a974ff;
   padding: 8px;

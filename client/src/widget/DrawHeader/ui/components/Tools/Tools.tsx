@@ -16,9 +16,6 @@ import circleIcon from "../../assets/circle.svg";
 const Tools: FC = observer(() => {
 	const canvas = canvasState.canvas;
 	const tool = toolState.tool;
-	const fillColor = toolState.fillColor;
-	const strokeColor = toolState.strokeColor;
-	const strokeWidth = toolState.strokeWidth;
 
 	if (!canvas) {
 		return <Loading size='sm' />;
