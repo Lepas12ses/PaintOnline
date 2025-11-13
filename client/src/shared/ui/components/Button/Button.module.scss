@@ -4,21 +4,9 @@
 	initial-value: 0deg;
 }
 
-@keyframes spin {
-	0% {
-		--angle: 0deg;
-	}
-	100% {
-		--angle: 360deg;
-	}
-}
-
 .button {
 	padding: 0.5rem 1rem;
-	background-color: #6513ff;
-	color: #fff;
 
-	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 	border-radius: 16px;
 	position: relative;
 
@@ -28,12 +16,7 @@
 			position: absolute;
 
 			content: "";
-			background-image: conic-gradient(
-				from var(--angle),
-				#d1b8ff,
-				#945aff,
-				#d1b8ff
-			);
+			background-color: #d1b8ff;
 
 			inset: -3px;
 			border-radius: 9999px;
@@ -46,5 +29,14 @@
 			--opacity: 0.5;
 			filter: blur(10px);
 		}
+	}
+
+	&_fill {
+		background-color: #6513ff;
+		color: #fff;
+	}
+	&_outline {
+		border: 1px solid #6513ff;
+		color: #460db0;
 	}
 }

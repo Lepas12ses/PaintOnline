@@ -3,24 +3,24 @@ import type { FC, ReactNode } from "react";
 import classes from "./ErrorDisplay.module.css";
 
 interface ErrorDisplayProps {
-	titleSlot: () => ReactNode;
-	contentSlot: () => ReactNode;
-	actionsSlot: () => ReactNode;
+	title?: string;
+	content?: string;
+	actionsSlot?: () => ReactNode;
 }
 
 const ErrorDisplay: FC<ErrorDisplayProps> = ({
-	titleSlot,
-	contentSlot,
+	title = "",
+	content = "",
 	actionsSlot,
 }) => {
 	return (
 		<div className={classes.card}>
-			<div>
-				{titleSlot()}
+			<div className={classes.content}>
+				<p className={classes.title}>{title}</p>
 				<hr />
-				{contentSlot()}
+				<p>{content}</p>
 			</div>
-			<div className={classes.actions}>{actionsSlot()}</div>
+			<div className={classes.actions}>{actionsSlot?.()}</div>
 		</div>
 	);
 };
