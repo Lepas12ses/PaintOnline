@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { observer } from "mobx-react-lite";
 
-import toolState, { Brush, Eraser, Line, Tool } from "@/entity/Tool";
+import toolState, { Brush, Circle, Eraser, Line, Rect } from "@/entity/Tool";
 import { canvasState } from "@/entity/Canvas";
 import Loading from "@/shared/ui/components/Loading/Loading";
 import IconToggle from "@/shared/ui/components/IconToggle/IconToggle";
@@ -10,6 +10,8 @@ import classes from "./Tools.module.css";
 import brushIcon from "../../assets/brush.svg";
 import eraserIcon from "../../assets/eraser.svg";
 import lineIcon from "../../assets/line.svg";
+import rectIcon from "../../assets/rect.svg";
+import circleIcon from "../../assets/circle.svg";
 
 const Tools: FC = observer(() => {
 	const canvas = canvasState.canvas;
@@ -50,6 +52,24 @@ const Tools: FC = observer(() => {
 				toggled={tool instanceof Line}
 			>
 				<img src={lineIcon} alt='Line' />
+			</IconToggle>
+			<IconToggle
+				onClick={() => {
+					if (tool instanceof Rect) toolState.unsetTool();
+					else toolState.setTool(new Rect(canvas));
+				}}
+				toggled={tool instanceof Rect}
+			>
+				<img src={rectIcon} alt='Rect' />
+			</IconToggle>
+			<IconToggle
+				onClick={() => {
+					if (tool instanceof Circle) toolState.unsetTool();
+					else toolState.setTool(new Circle(canvas));
+				}}
+				toggled={tool instanceof Circle}
+			>
+				<img src={circleIcon} alt='Circle' />
 			</IconToggle>
 		</menu>
 	);
