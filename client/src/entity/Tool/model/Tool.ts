@@ -25,7 +25,7 @@ export default class Tool {
 		this.canvasContext.lineWidth = width;
 	}
 
-	protected destroyEvents() {
+	destroyEvents() {
 		this.canvas.onmousedown = null;
 		this.canvas.onmouseup = null;
 		this.canvas.onmousemove = null;

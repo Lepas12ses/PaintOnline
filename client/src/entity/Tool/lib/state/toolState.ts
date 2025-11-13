@@ -11,13 +11,18 @@ class ToolState {
 		makeAutoObservable(this);
 	}
 
-	setTool(tool: Tool | null) {
+	setTool(tool: Tool) {
 		this.tool = tool;
 		if (this.tool) {
 			this.tool.fillColor = this.fillColor;
 			this.tool.strokeColor = this.strokeColor;
 			this.tool.strokeWidth = this.strokeWidth;
 		}
+	}
+
+	unsetTool() {
+		this.tool?.destroyEvents();
+		this.tool = null;
 	}
 
 	setFillColor(color: string) {

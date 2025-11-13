@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { observer } from "mobx-react-lite";
 
-import toolState, { Brush, Eraser } from "@/entity/Tool";
+import toolState, { Brush, Eraser, Line, Tool } from "@/entity/Tool";
 import { canvasState } from "@/entity/Canvas";
 import Loading from "@/shared/ui/components/Loading/Loading";
 import IconToggle from "@/shared/ui/components/IconToggle/IconToggle";
@@ -9,6 +9,7 @@ import classes from "./Tools.module.css";
 
 import brushIcon from "../../assets/brush.svg";
 import eraserIcon from "../../assets/eraser.svg";
+import lineIcon from "../../assets/line.svg";
 
 const Tools: FC = observer(() => {
 	const canvas = canvasState.canvas;
@@ -24,16 +25,31 @@ const Tools: FC = observer(() => {
 	return (
 		<menu className={classes.tools}>
 			<IconToggle
-				onClick={() => toolState.setTool(new Brush(canvas))}
+				onClick={() => {
+					if (tool instanceof Brush) toolState.unsetTool();
+					else toolState.setTool(new Brush(canvas));
+				}}
 				toggled={tool instanceof Brush}
 			>
 				<img src={brushIcon} alt='Brush' />
 			</IconToggle>
 			<IconToggle
-				onClick={() => toolState.setTool(new Eraser(canvas))}
+				onClick={() => {
+					if (tool instanceof Eraser) toolState.unsetTool();
+					else toolState.setTool(new Eraser(canvas));
+				}}
 				toggled={tool instanceof Eraser}
 			>
 				<img src={eraserIcon} alt='Eraser' />
+			</IconToggle>
+			<IconToggle
+				onClick={() => {
+					if (tool instanceof Line) toolState.unsetTool();
+					else toolState.setTool(new Line(canvas));
+				}}
+				toggled={tool instanceof Line}
+			>
+				<img src={lineIcon} alt='Line' />
 			</IconToggle>
 		</menu>
 	);
