@@ -4,6 +4,7 @@ export default class Tool {
 	protected canvas: HTMLCanvasElement;
 	protected canvasContext: CanvasRenderingContext2D;
 	protected onDraw: (figure: Figure) => void;
+	private eventsDestructor: () => void = () => {};
 
 	constructor(
 		canvas: HTMLCanvasElement,
@@ -16,8 +17,6 @@ export default class Tool {
 		}
 		this.canvasContext = canvasContext;
 		this.onDraw = onDraw;
-
-		this.destroyEvents();
 	}
 
 	set fillColor(color: string) {
@@ -33,8 +32,22 @@ export default class Tool {
 	}
 
 	destroyEvents() {
-		this.canvas.onmousedown = null;
-		this.canvas.onmouseup = null;
-		this.canvas.onmousemove = null;
+		this.eventsDestructor();
+	}
+
+	protected listen(
+		mouseDown: (e: MouseEvent) => void,
+		mouseUp: () => void,
+		mouseMove: (e: MouseEvent) => void
+	) {
+		this.canvas.addEventListener("mousedown", mouseDown);
+		this.canvas.addEventListener("mousemove", mouseMove);
+		document.addEventListener("mouseup", mouseUp);
+
+		this.eventsDestructor = () => {
+			this.canvas.removeEventListener("mousedown", mouseDown);
+			this.canvas.removeEventListener("mousemove", mouseMove);
+			document.removeEventListener("mouseup", mouseUp);
+		};
 	}
 }

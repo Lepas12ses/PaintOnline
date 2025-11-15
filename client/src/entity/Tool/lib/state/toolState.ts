@@ -12,6 +12,8 @@ class ToolState {
 	}
 
 	setTool(tool: Tool) {
+		this.unsetTool();
+
 		this.tool = tool;
 		if (this.tool) {
 			this.tool.fillColor = this.fillColor;

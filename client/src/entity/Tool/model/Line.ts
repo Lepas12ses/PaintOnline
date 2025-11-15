@@ -1,45 +1,49 @@
 import type { Figure } from "@/shared/model/WsMessage/Figure";
 import onCanvasRestore from "../lib/helper/onCanvasRestore";
 import Tool from "./Tool";
+import type { Point } from "motion";
 
 export default class Line extends Tool {
 	isDown = false;
 	savedImage = "";
-	startX = 0;
-	startY = 0;
+	start: Point = {
+		x: 0,
+		y: 0,
+	};
+	end: Point = {
+		x: 0,
+		y: 0,
+	};
 
 	constructor(
 		canvas: HTMLCanvasElement,
 		onDraw: (figure: Figure) => void = () => {}
 	) {
 		super(canvas, onDraw);
-		this.listen();
+		this.listen(
+			this.mouseDownHandler.bind(this),
+			this.mouseUpHandler.bind(this),
+			this.mouseMoveHandler.bind(this)
+		);
 	}
 
 	protected mouseDownHandler(e: MouseEvent) {
-		this.startX = e.offsetX;
-		this.startY = e.offsetY;
+		this.start = {
+			x: e.offsetX,
+			y: e.offsetY,
+		};
 
 		this.isDown = true;
 		this.savedImage = this.canvas.toDataURL();
 	}
 
-	protected mouseUpHandler(e: MouseEvent) {
+	protected mouseUpHandler() {
 		this.isDown = false;
-
-		const endX = e.offsetX;
-		const endY = e.offsetY;
 
 		const figure: Figure = {
 			type: "line",
-			start: {
-				x: this.startX,
-				y: this.startY,
-			},
-			end: {
-				x: endX,
-				y: endY,
-			},
+			start: this.start,
+			end: this.end,
 			strokeColor: this.canvasContext.strokeStyle.toString(),
 			strokeWidth: this.canvasContext.lineWidth,
 		};
@@ -48,18 +52,13 @@ export default class Line extends Tool {
 
 	protected mouseMoveHandler(e: MouseEvent) {
 		if (this.isDown) {
+			this.end = { x: e.offsetX, y: e.offsetY };
 			onCanvasRestore(this.canvas, this.canvasContext, this.savedImage, () => {
 				this.canvasContext.beginPath();
-				this.canvasContext.moveTo(this.startX, this.startY);
-				this.canvasContext.lineTo(e.offsetX, e.offsetY);
+				this.canvasContext.moveTo(this.start.x, this.start.y);
+				this.canvasContext.lineTo(this.end.x, this.end.y);
 				this.canvasContext.stroke();
 			});
 		}
-	}
-
-	protected listen() {
-		this.canvas.onmousedown = this.mouseDownHandler.bind(this);
-		this.canvas.onmouseup = this.mouseUpHandler.bind(this);
-		this.canvas.onmousemove = this.mouseMoveHandler.bind(this);
 	}
 }

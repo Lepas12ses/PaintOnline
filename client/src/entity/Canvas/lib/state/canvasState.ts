@@ -8,8 +8,6 @@ class CanvasState {
 	socket: WebSocket | null = null;
 	roomId: string | null = null;
 	sendFigure = (figure: Figure) => {
-		console.log(this.roomId);
-
 		if (!this.socket || !this.roomId) return;
 
 		const message: WsMessage = {

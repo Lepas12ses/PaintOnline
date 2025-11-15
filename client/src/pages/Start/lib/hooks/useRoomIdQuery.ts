@@ -11,8 +11,6 @@ export default function useRoomIdQuery() {
 		queryClient
 	);
 
-	console.log(data);
-
 	return {
 		roomId: data?.roomId,
 		isPending,

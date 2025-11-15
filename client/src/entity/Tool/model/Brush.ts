@@ -1,16 +1,21 @@
+import type { Point } from "motion";
 import Tool from "./Tool";
 import type { Figure } from "@/shared/model/WsMessage/Figure";
 
 export default class Brush extends Tool {
 	isDown = false;
-	path: { x: number; y: number }[] = [];
+	path: Point[] = [];
 
 	constructor(
 		canvas: HTMLCanvasElement,
 		onDraw: (figure: Figure) => void = () => {}
 	) {
 		super(canvas, onDraw);
-		this.listen();
+		this.listen(
+			this.mouseDownHandler.bind(this),
+			this.mouseUpHandler.bind(this),
+			this.mouseMoveHandler.bind(this)
+		);
 	}
 
 	protected mouseDownHandler(e: MouseEvent) {
@@ -41,11 +46,5 @@ export default class Brush extends Tool {
 
 			this.path.push({ x, y });
 		}
-	}
-
-	protected listen() {
-		this.canvas.onmousedown = this.mouseDownHandler.bind(this);
-		this.canvas.onmouseup = this.mouseUpHandler.bind(this);
-		this.canvas.onmousemove = this.mouseMoveHandler.bind(this);
 	}
 }
