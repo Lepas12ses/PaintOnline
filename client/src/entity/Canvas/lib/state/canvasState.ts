@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 class CanvasState {
 	canvas: HTMLCanvasElement | null = null;
+	socket: WebSocket | null = null;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -9,6 +10,10 @@ class CanvasState {
 
 	setCanvas(canvas: HTMLCanvasElement | null) {
 		this.canvas = canvas;
+	}
+
+	setSocket(socket: WebSocket | null) {
+		this.socket = socket;
 	}
 }
 

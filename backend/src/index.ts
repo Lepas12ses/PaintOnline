@@ -3,18 +3,20 @@ import expressWs from "express-ws";
 import { config } from "dotenv";
 import cors from "cors";
 
-import wsRouter from "./route/WsRouter.js";
+import wsRouter, { mountRouter } from "./route/WsRouter.js";
 import roomRouter from "./route/RoomRouter.js";
 
 config();
 
 const PORT = process.env.PORT || 5000;
 
-const app = express();
-const WSServer = expressWs(app);
+const WSServer = expressWs(express());
+const { app, applyTo, getWss } = WSServer;
+applyTo(wsRouter);
+mountRouter(getWss());
 
 app.use(cors());
-WSServer.app.use("/", wsRouter);
+app.use("/", wsRouter);
 app.use("/room", roomRouter);
 
 app.listen(PORT, err => {

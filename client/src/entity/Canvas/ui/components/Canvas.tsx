@@ -3,7 +3,12 @@ import canvasState from "../../lib/state/canvasState";
 
 import classes from "./Canvas.module.css";
 
-const Canvas: FC = () => {
+interface CanvasProps {
+	username: string;
+	roomId: string;
+}
+
+const Canvas: FC<CanvasProps> = ({ username, roomId }) => {
 	const ref = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
@@ -16,6 +21,31 @@ const Canvas: FC = () => {
 			};
 		}
 	}, []);
+
+	useEffect(() => {
+		const ws = new WebSocket("ws://localhost:5000/");
+
+		const closeConnection = () => {
+			ws.close();
+		};
+
+		ws.onopen = () => {
+			ws.send(
+				JSON.stringify({
+					id: roomId,
+					username: username,
+					type: "connection",
+				})
+			);
+		};
+		ws.onmessage = event => {
+			const msg = JSON.parse(event.data);
+
+			console.log(msg);
+		};
+
+		return closeConnection;
+	});
 
 	return (
 		<canvas className={classes.canvas} ref={ref} width={900} height={600} />
