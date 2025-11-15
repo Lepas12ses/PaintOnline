@@ -3,12 +3,20 @@ import type { FC } from "react";
 
 import classes from "./DrawCanvas.module.css";
 import Canvas from "@/entity/Canvas";
+import UsernameModal, { useUsernameModal } from "@/entity/UsernameModal";
 
 const DrawCanvas: FC = () => {
+	const { username, onSubmit: submitUsername } = useUsernameModal();
+
+	console.log(username);
+
 	return (
-		<Box className={classes.background}>
-			<Canvas />
-		</Box>
+		<>
+			<UsernameModal onSubmit={submitUsername} />
+			<Box className={classes.background}>
+				<Canvas />
+			</Box>
+		</>
 	);
 };
 
