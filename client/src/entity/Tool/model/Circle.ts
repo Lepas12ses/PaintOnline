@@ -42,7 +42,6 @@ export default class Circle extends Tool {
 					Math.PI * 2
 				);
 				this.canvasContext.fill();
-				this.canvasContext.stroke();
 			});
 		}
 	}
