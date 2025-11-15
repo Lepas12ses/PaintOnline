@@ -1,15 +1,14 @@
 import type { WebsocketRequestHandler } from "express-ws";
 
 import type { WsMessage } from "../schema/WsMessage.js";
-import type expressWs from "express-ws";
+import DrawService from "../service/RoomService/DrawService.js";
+import type { WebSocketServer } from "../types/WebSocketServer.js";
 
 class DrawController {
-	wss: ReturnType<expressWs.Instance["getWss"]>;
-	clientsIds: WeakMap<Parameters<WebsocketRequestHandler>[0], string> =
-		new WeakMap();
+	drawService: DrawService;
 
-	constructor(wss: ReturnType<expressWs.Instance["getWss"]>) {
-		this.wss = wss;
+	constructor(wss: WebSocketServer) {
+		this.drawService = new DrawService(wss);
 	}
 
 	handler: WebsocketRequestHandler = (ws, req) => {
@@ -19,18 +18,12 @@ class DrawController {
 			switch (data.type) {
 				case "connection":
 					{
-						this.clientsIds.set(ws, data.id);
+						this.drawService.connect(ws, data);
 					}
 					break;
 				case "draw":
 					{
-						const { id } = data;
-
-						this.wss.clients.forEach(client => {
-							const clientId = this.clientsIds.get(client);
-
-							if (id === clientId) client.send(JSON.stringify(data));
-						});
+						this.drawService.drawFigure(data);
 					}
 					break;
 			}

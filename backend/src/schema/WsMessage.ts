@@ -5,12 +5,12 @@ interface IWsMessage {
 	type: string;
 }
 
-interface ConnectionMessage extends IWsMessage {
+export interface ConnectionMessage extends IWsMessage {
 	type: "connection";
 	username: string;
 }
 
-interface DrawMessage extends IWsMessage {
+export interface DrawMessage extends IWsMessage {
 	type: "draw";
 	figure: Figure;
 }
