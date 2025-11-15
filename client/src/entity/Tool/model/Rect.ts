@@ -1,3 +1,4 @@
+import type { Figure } from "@/shared/model/WsMessage/Figure";
 import onCanvasRestore from "../lib/helper/onCanvasRestore";
 import Tool from "./Tool";
 
@@ -7,8 +8,11 @@ export default class Rect extends Tool {
 	startX = 0;
 	startY = 0;
 
-	constructor(canvas: HTMLCanvasElement) {
-		super(canvas);
+	constructor(
+		canvas: HTMLCanvasElement,
+		onDraw: (figure: Figure) => void = () => {}
+	) {
+		super(canvas, onDraw);
 		this.listen();
 	}
 
@@ -20,8 +24,25 @@ export default class Rect extends Tool {
 		this.savedImage = this.canvas.toDataURL();
 	}
 
-	protected mouseUpHandler() {
+	protected mouseUpHandler(e: MouseEvent) {
 		this.isDown = false;
+
+		const width = e.offsetX - this.startX;
+		const height = e.offsetY - this.startY;
+
+		const figure: Figure = {
+			type: "rect",
+			position: {
+				x: this.startX,
+				y: this.startY,
+			},
+			size: {
+				x: width,
+				y: height,
+			},
+			fillColor: this.canvasContext.fillStyle.toString(),
+		};
+		this.onDraw(figure);
 	}
 
 	protected mouseMoveHandler(e: MouseEvent) {

@@ -2,6 +2,7 @@ import { useEffect, useRef, type FC } from "react";
 import canvasState from "../../lib/state/canvasState";
 
 import classes from "./Canvas.module.css";
+import type { WsMessage } from "@/shared/model/WsMessage/WsMessage";
 
 interface CanvasProps {
 	username: string;
@@ -39,13 +40,29 @@ const Canvas: FC<CanvasProps> = ({ username, roomId }) => {
 			);
 		};
 		ws.onmessage = event => {
-			const msg = JSON.parse(event.data);
+			const data = JSON.parse(event.data) as WsMessage;
 
-			console.log(msg);
+			switch (data.type) {
+				case "connection":
+					{
+						console.log(`${data.username} connected`);
+					}
+					break;
+				case "draw":
+					{
+						const { figure } = data;
+
+						canvasState.draw(figure);
+					}
+					break;
+			}
 		};
 
+		canvasState.setSocket(ws);
+		canvasState.setRoomId(roomId);
+
 		return closeConnection;
-	});
+	}, [roomId, username]);
 
 	return (
 		<canvas className={classes.canvas} ref={ref} width={900} height={600} />

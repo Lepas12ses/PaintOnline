@@ -1,4 +1,4 @@
-import type { Figure } from "./Figure.js";
+import type { Figure } from "./Figure";
 
 interface IWsMessage {
 	id: string;

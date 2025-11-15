@@ -1,3 +1,4 @@
+import type { Figure } from "@/shared/model/WsMessage/Figure";
 import onCanvasRestore from "../lib/helper/onCanvasRestore";
 import Tool from "./Tool";
 
@@ -7,8 +8,11 @@ export default class Line extends Tool {
 	startX = 0;
 	startY = 0;
 
-	constructor(canvas: HTMLCanvasElement) {
-		super(canvas);
+	constructor(
+		canvas: HTMLCanvasElement,
+		onDraw: (figure: Figure) => void = () => {}
+	) {
+		super(canvas, onDraw);
 		this.listen();
 	}
 
@@ -20,8 +24,26 @@ export default class Line extends Tool {
 		this.savedImage = this.canvas.toDataURL();
 	}
 
-	protected mouseUpHandler() {
+	protected mouseUpHandler(e: MouseEvent) {
 		this.isDown = false;
+
+		const endX = e.offsetX;
+		const endY = e.offsetY;
+
+		const figure: Figure = {
+			type: "line",
+			start: {
+				x: this.startX,
+				y: this.startY,
+			},
+			end: {
+				x: endX,
+				y: endY,
+			},
+			strokeColor: this.canvasContext.strokeStyle.toString(),
+			strokeWidth: this.canvasContext.lineWidth,
+		};
+		this.onDraw(figure);
 	}
 
 	protected mouseMoveHandler(e: MouseEvent) {

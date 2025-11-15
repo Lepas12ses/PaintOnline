@@ -14,8 +14,6 @@ class DrawController {
 
 	handler: WebsocketRequestHandler = (ws, req) => {
 		ws.on("message", msg => {
-			console.log("s");
-
 			const data = JSON.parse(msg.toString()) as WsMessage;
 
 			switch (data.type) {
@@ -26,6 +24,13 @@ class DrawController {
 					break;
 				case "draw":
 					{
+						const { id } = data;
+
+						this.wss.clients.forEach(client => {
+							const clientId = this.clientsIds.get(client);
+
+							if (id === clientId) client.send(JSON.stringify(data));
+						});
 					}
 					break;
 			}

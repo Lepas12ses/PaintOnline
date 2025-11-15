@@ -14,10 +14,10 @@ import rectIcon from "../../assets/rect.svg";
 import circleIcon from "../../assets/circle.svg";
 
 const Tools: FC = observer(() => {
-	const canvas = canvasState.canvas;
+	const { canvas, socket, roomId, sendFigure } = canvasState;
 	const tool = toolState.tool;
 
-	if (!canvas) {
+	if (!canvas || !socket || !roomId) {
 		return <Loading size='sm' />;
 	}
 
@@ -26,7 +26,7 @@ const Tools: FC = observer(() => {
 			<IconToggle
 				onClick={() => {
 					if (tool instanceof Brush) toolState.unsetTool();
-					else toolState.setTool(new Brush(canvas));
+					else toolState.setTool(new Brush(canvas, sendFigure));
 				}}
 				toggled={tool instanceof Brush}
 			>
@@ -35,7 +35,7 @@ const Tools: FC = observer(() => {
 			<IconToggle
 				onClick={() => {
 					if (tool instanceof Eraser) toolState.unsetTool();
-					else toolState.setTool(new Eraser(canvas));
+					else toolState.setTool(new Eraser(canvas, sendFigure));
 				}}
 				toggled={tool instanceof Eraser}
 			>
@@ -44,7 +44,7 @@ const Tools: FC = observer(() => {
 			<IconToggle
 				onClick={() => {
 					if (tool instanceof Line) toolState.unsetTool();
-					else toolState.setTool(new Line(canvas));
+					else toolState.setTool(new Line(canvas, sendFigure));
 				}}
 				toggled={tool instanceof Line}
 			>
@@ -53,7 +53,7 @@ const Tools: FC = observer(() => {
 			<IconToggle
 				onClick={() => {
 					if (tool instanceof Rect) toolState.unsetTool();
-					else toolState.setTool(new Rect(canvas));
+					else toolState.setTool(new Rect(canvas, sendFigure));
 				}}
 				toggled={tool instanceof Rect}
 			>
@@ -62,7 +62,7 @@ const Tools: FC = observer(() => {
 			<IconToggle
 				onClick={() => {
 					if (tool instanceof Circle) toolState.unsetTool();
-					else toolState.setTool(new Circle(canvas));
+					else toolState.setTool(new Circle(canvas, sendFigure));
 				}}
 				toggled={tool instanceof Circle}
 			>
